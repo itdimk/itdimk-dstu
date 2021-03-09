@@ -24,7 +24,7 @@ export default defineComponent({
 <style scoped>
 .day-name {
   background: #433D53;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   text-align: center;
   color: white;
   padding: 0.1rem 0;

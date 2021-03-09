@@ -4,6 +4,6 @@ import {State} from "@/store/State";
 
 export default createStore<State>({
     modules: {
-        schedule: ScheduleModule
+        schedule: {namespaced: true, ...ScheduleModule}
     }
 })

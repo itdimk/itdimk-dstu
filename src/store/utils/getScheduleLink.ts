@@ -3,11 +3,11 @@
 export function getScheduleLink(target: ScheduleTarget, date: Date) {
     switch (target.targetType) {
         case  "group":
-            return getGroupScheduleLink(parseInt(target.targetValue), date);
+            return getGroupScheduleLink(target.targetId, date);
         case "teacher":
-            return getTeacherScheduleLink(parseInt(target.targetValue), date);
+            return getTeacherScheduleLink(target.targetId, date);
         case "class":
-            return getClassScheduleLink(parseInt(target.targetValue), date);
+            return getClassScheduleLink(target.targetId, date);
     }
 }
 
@@ -24,5 +24,12 @@ function getClassScheduleLink(classId: number, date: Date) {
 }
 
 function formatDate(date: Date): string {
-    return `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}
+
+function pad(number: number) {
+    if (number < 10) {
+        return '0' + number;
+    }
+    return number;
 }

@@ -47,7 +47,7 @@ export default defineComponent({
 
 .time {
   padding: 0 1rem;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   margin-top: auto;
   margin-bottom: auto;
 }
@@ -56,11 +56,11 @@ export default defineComponent({
   padding: 0.5rem 1rem;
 
   .title {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
   }
 
   .class-number {
-    font-size: 1.05rem;
+    font-size: 1rem;
   }
 
   .teacher {
