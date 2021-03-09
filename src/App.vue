@@ -1,30 +1,26 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div>
+  <the-navbar></the-navbar>
   <router-view/>
 </template>
 
+
+<script>
+import TheNavbar from "@/components/TheNavbar";
+export default {
+  components: {TheNavbar}
+}
+</script>
+
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+@import "~modern-css-reset/dist/reset.min.css";
+
+@font-face {
+  font-family: 'Roboto Regular';
+  src: url("assets/Roboto-Regular.ttf");
 }
 
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+body {
+  font-family: "Roboto Regular", serif;
 }
+
 </style>
