@@ -16,6 +16,7 @@ export function getTypedSchedule(dstuResponseJson: any): Schedule {
         target: {
             targetType: "group",
             targetId: 12344,
+            title: 'some group'
         },
         updatedAt: new Date(),
         uploadedAt: new Date()
@@ -40,6 +41,7 @@ function getTypedDays(dstuResponseJson: any): ScheduleDay[] {
         }
 
         days[days.length - 1].subjects.push({
+            id: subject["код"],
             title: subject["дисциплина"],
             startTime: subject["начало"],
             endTime: subject["конец"],

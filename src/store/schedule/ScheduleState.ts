@@ -4,6 +4,6 @@ import {ScheduleTarget} from "@/types/schedule/ScheduleTarget";
 export default interface ScheduleState {
     schedule: Schedule | undefined,
     selectedTarget: ScheduleTarget,
-    availableTargets: []
+    availableTargets: ScheduleTarget[]
     selectedDate: Date,
 }

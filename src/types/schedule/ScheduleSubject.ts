@@ -1,4 +1,5 @@
 ﻿export interface ScheduleSubject {
+    id: string,
     title: string,
     teacherName: string,
     classNumber: string,

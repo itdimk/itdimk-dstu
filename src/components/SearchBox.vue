@@ -1,48 +1,91 @@
 ﻿<template>
   <div>
-    <input id="autoComplete" type="text" dir="ltr" spellcheck=false autocorrect="off" autocomplete="off"
-           autocapitalize="off" maxlength="2048" tabindex="1">
+    <input
+      id="autoComplete"
+      type="text"
+      spellcheck="false"
+      autocorrect="off"
+      autocomplete="off"
+      autocapitalize="off"
+      maxlength="256"
+      tabindex="1"
+      :value="text"
+      @blur="$emit('blur', $event)"
+      @focus="$emit('focus', $event)"
+    />
   </div>
 </template>
 
 <script>
-import AutoComplete from '@tarekraafat/autocomplete.js'
+import AutoComplete from "@tarekraafat/autocomplete.js";
 
 export default {
   name: "SearchBox",
+  emits: {
+    itemSelected: (item) => !!item,
+    blur: null,
+    focus: null,
+  },
+  props: {
+    autocompleteSource: {
+      type: Array,
+      required: true,
+    },
+    keyProperty: {
+      type: String,
+      required: true,
+    },
+    placeHolder: {
+      default: "Search",
+      type: String,
+      required: false,
+    },
+    maxResults: {
+      type: Number,
+      default: 6,
+      required: false,
+    },
+    threshold: {
+      type: Number,
+      default: 1,
+      required: false,
+    },
+    text: {
+      type: String,
+      required: false,
+    },
+  },
+
   mounted() {
     const autoCompleteJS = new AutoComplete({
-      data: {                              // Data src [Array, Function, Async] | (REQUIRED)
-        src: async () => {
-         const response = await fetch("https://edu.donstu.ru/api/raspGrouplist?year=2020-2021");
-         const json = await response.json();
-         console.log(json.data);
-         return json.data;
-        },
-        key: ["name"],
-        cache: true
+      data: {
+        src: this.autocompleteSource,
+        key: [this.keyProperty],
+        cache: true,
       },
-      placeHolder: "Search",     // Place Holder text                 | (Optional)
-      selector: "#autoComplete",           // Input field selector              | (Optional)
-      observer: true,                      // Input field observer | (Optional)
-      threshold: 2,                        // Min. Chars length to start Engine | (Optional)
-      debounce: 300,                       // Post duration for engine to start | (Optional)
-      searchEngine: "strict",              // Search Engine type/mode           | (Optional)
-      resultsList: {                       // Rendered results list object      | (Optional)
-        container: source => {
+      trigger: {
+        event: ["click", "input"],
+      },
+      placeHolder: this.placeHolder,
+      selector: "#autoComplete",
+      threshold: this.threshold,
+      debounce: 300,
+      searchEngine: "strict",
+      resultsList: {
+        container: (source) => {
           source.setAttribute("id", "result_list");
         },
         destination: "#autoComplete",
         position: "afterend",
         element: "ul",
-        idName: 'result_list'
+        idName: "result_list",
       },
-      maxResults: 6,                         // Max. number of rendered results | (Optional)
-      resultItem: {                          // Rendered result item            | (Optional)
+      maxResults: this.maxResults,
+      resultItem: {
         content: (data, source) => {
           source.innerHTML = data.match;
         },
-        element: "li"
+        element: "li",
       },
       noResults: (dataFeedback, generateList) => {
         // Generate autoComplete List
@@ -53,14 +96,16 @@ export default {
         result.setAttribute("tabindex", "1");
         result.innerHTML = `<span style="display: flex; align-items: center; font-weight: 100; color: rgba(0,0,0,.2);">Found No Results for "${dataFeedback.query}"</span>`;
 
-        document.querySelector(`#${autoCompleteJS.resultsList.idName}`).appendChild(result);
+        document
+          .querySelector(`#${autoCompleteJS.resultsList.idName}`)
+          .appendChild(result);
       },
-      onSelection: feedback => {             // Action script onSelection event | (Optional)
-        console.log(feedback.selection.value);
-      }
+      onSelection: (feedback) => {
+        this.$emit("itemSelected", feedback.selection.value);
+      },
     });
   },
-}
+};
 </script>
 
 <style lang="scss">
@@ -71,7 +116,7 @@ export default {
   outline: none;
   transition: all ease 0.3s;
   padding: 0.1rem 0.5rem;
-  width: 50%;
+  width: 75%;
   position: relative;
 
   &:focus {
@@ -98,10 +143,10 @@ export default {
   padding: 0.2rem;
   display: block;
   outline: none;
+  cursor: pointer;
 
   &:hover {
-    background: #EEEEEE;
+    background: #eeeeee;
   }
 }
-
 </style>

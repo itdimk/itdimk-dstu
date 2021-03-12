@@ -56,7 +56,7 @@ export default defineComponent({
   padding: 0.5rem 1rem;
 
   .title {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
   }
 
   .class-number {

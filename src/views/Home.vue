@@ -1,6 +1,6 @@
 <template>
   <div class="container" v-if="schedule">
-    <day-card v-for="day in schedule.weeks[0].days" :day="day"></day-card>
+    <day-card v-for="day in schedule.weeks[0].days" :day="day" :key="day.date"></day-card>
   </div>
 </template>
 
