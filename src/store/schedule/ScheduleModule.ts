@@ -7,6 +7,7 @@ import { ScheduleTarget } from "@/types/schedule/ScheduleTarget";
 import { getScheduleTargetLink } from "@/store/utils/getScheduleTargetLink";
 import { getTypedScheduleTargets } from "@/store/utils/getTypedScheduleTargets";
 import { getInitScheduleTarget } from "./getInitScheduleTarget";
+import { JsonDateParser, } from "../utils/JsonDateParser";
 
 export const ScheduleModule: StoreOptions<ScheduleState> = {
     state: () => ({
@@ -30,7 +31,7 @@ export const ScheduleModule: StoreOptions<ScheduleState> = {
             return state.schedule?.target;
         },
         selectedDate(state) {
-            return state.selectedDate;
+            return state.selectedDate
         }
     },
     mutations: {
@@ -49,11 +50,12 @@ export const ScheduleModule: StoreOptions<ScheduleState> = {
     },
     actions: {
         async fetchSchedule({ state, commit }) {
+
             const link = getScheduleLink(state.selectedTarget, state.selectedDate);
             try {
                 const response = await fetch(link);
                 const json = await response.json();
-                const typedSchedule = getTypedSchedule(json);
+                const typedSchedule = getTypedSchedule(json, state.selectedTarget);
                 commit('setSchedule', typedSchedule);
                 localStorage.setItem('schedule', JSON.stringify(typedSchedule));
                 state.isOfflineMode = false;
@@ -61,7 +63,7 @@ export const ScheduleModule: StoreOptions<ScheduleState> = {
                 state.isOfflineMode = true;
                 const offlineSchedule = localStorage.getItem('schedule');
                 if (offlineSchedule) {
-                    commit('setSchedule', JSON.parse(offlineSchedule))
+                    commit('setSchedule', JSON.parse(offlineSchedule, JsonDateParser ))
                 }
                 console.log('fetch error');
             }

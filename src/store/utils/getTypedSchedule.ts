@@ -2,8 +2,10 @@
 import { ScheduleWeek } from "@/types/schedule/ScheduleWeek";
 import { Schedule } from "@/types/schedule/Schedule";
 import { formatDateToISO } from "./formatDateToISO";
+import { ScheduleTargetType } from "@/types/schedule/ScheduleTargetType";
+import { ScheduleTarget } from "@/types/schedule/ScheduleTarget";
 
-export function getTypedSchedule(dstuResponseJson: any): Schedule {
+export function getTypedSchedule(dstuResponseJson: any, target: ScheduleTarget): Schedule {
     const days: ScheduleDay[] = getTypedDays(dstuResponseJson);
 
     const week: ScheduleWeek = {
@@ -14,15 +16,12 @@ export function getTypedSchedule(dstuResponseJson: any): Schedule {
 
     return {
         weeks: [week],
-        target: {
-            targetType: "group", // TODO: FIX THIS
-            targetId: parseInt(dstuResponseJson.data.info.group.groupID),
-            title: dstuResponseJson.data.info.group.name
-        },
+        target: target,
         updatedAt: new Date(),
         uploadedAt: new Date()
     }
 }
+
 
 function getTypedDays(dstuResponseJson: any): ScheduleDay[] {
     const rasp: any[] = dstuResponseJson.data.rasp;
