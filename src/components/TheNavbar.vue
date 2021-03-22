@@ -7,6 +7,7 @@
       @itemSelected="onItemSelected"
       @blur="isDateVisible = true"
       @focus="hideDate"
+      :text="selectedTarget ? selectedTarget.title : null"
     ></search-box>
 
     <date-picker
@@ -15,7 +16,6 @@
       v-model="selectedDate"
       :date="selectedDate"
     ></date-picker>
-
   </nav>
 </template>
 
@@ -40,8 +40,9 @@ export default defineComponent({
       await this.fetchSchedule();
     },
   },
+
   computed: {
-    ...mapGetters("schedule", ["availableTargets"]),
+    ...mapGetters("schedule", ["availableTargets", "selectedTarget"]),
   },
   data: () => ({
     isDateVisible: true,
@@ -51,7 +52,7 @@ export default defineComponent({
     async selectedDate() {
       this.selectDate(new Date(event.target.value));
       await this.fetchSchedule();
-    }
+    },
   },
   async mounted() {
     await this.fetchAvailableTargets();

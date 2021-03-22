@@ -1,6 +1,7 @@
-﻿import {ScheduleDay} from "@/types/schedule/ScheduleDay";
-import {ScheduleWeek} from "@/types/schedule/ScheduleWeek";
-import {Schedule} from "@/types/schedule/Schedule";
+﻿import { ScheduleDay } from "@/types/schedule/ScheduleDay";
+import { ScheduleWeek } from "@/types/schedule/ScheduleWeek";
+import { Schedule } from "@/types/schedule/Schedule";
+import { formatDateToISO } from "./formatDateToISO";
 
 export function getTypedSchedule(dstuResponseJson: any): Schedule {
     const days: ScheduleDay[] = getTypedDays(dstuResponseJson);
@@ -14,9 +15,9 @@ export function getTypedSchedule(dstuResponseJson: any): Schedule {
     return {
         weeks: [week],
         target: {
-            targetType: "group",
-            targetId: 12344,
-            title: 'some group'
+            targetType: "group", // TODO: FIX THIS
+            targetId: parseInt(dstuResponseJson.data.info.group.groupID),
+            title: dstuResponseJson.data.info.group.name
         },
         updatedAt: new Date(),
         uploadedAt: new Date()
@@ -34,7 +35,7 @@ function getTypedDays(dstuResponseJson: any): ScheduleDay[] {
 
             days.push({
                 date: date,
-                title: subject['день_недели'],
+                title: `${subject['день_недели']}, ${getDayAndMonthString(date)}`,
                 subjects: []
             })
 
@@ -51,4 +52,8 @@ function getTypedDays(dstuResponseJson: any): ScheduleDay[] {
     }
 
     return days;
+}
+
+function getDayAndMonthString(date: Date) {
+    return formatDateToISO(date).split('-').slice(1).reverse().join('.');
 }

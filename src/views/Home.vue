@@ -1,29 +1,45 @@
 <template>
   <div class="container" v-if="schedule">
-    <day-card v-for="day in schedule.weeks[0].days" :day="day" :key="day.date"></day-card>
+  <Alert :alertData="offlineAlert" v-if="isOffline" />
+    <day-card
+      v-for="day in schedule.weeks[0].days"
+      :day="day"
+      :key="day.date"
+    ></day-card>
   </div>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import { defineComponent } from "vue";
 import DayCard from "@/components/DayCard.vue";
-import {mapActions, mapGetters} from 'vuex'
+import { mapActions, mapGetters } from "vuex";
+import Alert from "@/components/Alert.vue";
 
 export default defineComponent({
-  name: 'Home',
+  name: "Home",
   components: {
     DayCard,
+    Alert,
+  },
+  data() {
+    return {
+      offlineAlert: {
+        title: "Не удается подключиться к серверу",
+        description: "Просмотр последней сохраненной копии",
+        type: "warning",
+      },
+    };
   },
   methods: {
-    ...mapActions('schedule', ['fetchSchedule']),
+    ...mapActions("schedule", ["fetchSchedule"]),
   },
   computed: {
-    ...mapGetters('schedule', ['schedule'])
+    ...mapGetters("schedule", ["schedule", "isOffline"]),
   },
 
   async mounted() {
     await this.fetchSchedule();
-  }
+  },
 });
 </script>
 

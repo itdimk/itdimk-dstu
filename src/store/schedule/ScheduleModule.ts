@@ -1,18 +1,20 @@
-﻿import {StoreOptions} from "vuex";
+﻿import { StoreOptions } from "vuex";
 import ScheduleState from "@/store/schedule/ScheduleState";
-import {Schedule} from "@/types/schedule/Schedule";
-import {getScheduleLink} from "@/store/utils/getScheduleLink";
-import {getTypedSchedule} from "@/store/utils/getTypedSchedule";
-import {ScheduleTarget} from "@/types/schedule/ScheduleTarget";
-import {getScheduleTargetLink} from "@/store/utils/getScheduleTargetLink";
-import {getTypedScheduleTargets} from "@/store/utils/getTypedScheduleTargets";
+import { Schedule } from "@/types/schedule/Schedule";
+import { getScheduleLink } from "@/store/utils/getScheduleLink";
+import { getTypedSchedule } from "@/store/utils/getTypedSchedule";
+import { ScheduleTarget } from "@/types/schedule/ScheduleTarget";
+import { getScheduleTargetLink } from "@/store/utils/getScheduleTargetLink";
+import { getTypedScheduleTargets } from "@/store/utils/getTypedScheduleTargets";
+import { getInitScheduleTarget } from "./getInitScheduleTarget";
 
 export const ScheduleModule: StoreOptions<ScheduleState> = {
     state: () => ({
         availableTargets: [],
         schedule: undefined,
         selectedDate: new Date(),
-        selectedTarget: {targetType: "group", targetId: 36241, title: 'Some shit'},
+        selectedTarget: getInitScheduleTarget('schedule'),
+        isOfflineMode: false,
     }),
     getters: {
         schedule(state) {
@@ -20,6 +22,15 @@ export const ScheduleModule: StoreOptions<ScheduleState> = {
         },
         availableTargets(state) {
             return state.availableTargets
+        },
+        isOffline(state) {
+            return state.isOfflineMode;
+        },
+        selectedTarget(state) {
+            return state.schedule?.target;
+        },
+        selectedDate(state) {
+            return state.selectedDate;
         }
     },
     mutations: {
@@ -37,19 +48,26 @@ export const ScheduleModule: StoreOptions<ScheduleState> = {
         }
     },
     actions: {
-        async fetchSchedule({state, commit}) {
+        async fetchSchedule({ state, commit }) {
             const link = getScheduleLink(state.selectedTarget, state.selectedDate);
-
             try {
                 const response = await fetch(link);
                 const json = await response.json();
-                commit('setSchedule', getTypedSchedule(json));
+                const typedSchedule = getTypedSchedule(json);
+                commit('setSchedule', typedSchedule);
+                localStorage.setItem('schedule', JSON.stringify(typedSchedule));
+                state.isOfflineMode = false;
             } catch (e) {
+                state.isOfflineMode = true;
+                const offlineSchedule = localStorage.getItem('schedule');
+                if (offlineSchedule) {
+                    commit('setSchedule', JSON.parse(offlineSchedule))
+                }
                 console.log('fetch error');
             }
         },
 
-        async fetchAvailableTargets({state, commit}) {
+        async fetchAvailableTargets({ state, commit }) {
             const linkGroups = getScheduleTargetLink("group", [2020, 2021]);
             const linkClasses = getScheduleTargetLink("class", [2020, 2021]);
             const linkTeachers = getScheduleTargetLink("teacher", [2020, 2021]);

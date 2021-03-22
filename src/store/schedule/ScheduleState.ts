@@ -6,4 +6,5 @@ export default interface ScheduleState {
     selectedTarget: ScheduleTarget,
     availableTargets: ScheduleTarget[]
     selectedDate: Date,
+    isOfflineMode: boolean
 }

@@ -47,7 +47,7 @@ export default defineComponent({
 
 .time {
   padding: 0 1rem;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   margin-top: auto;
   margin-bottom: auto;
 }
