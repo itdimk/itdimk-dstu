@@ -10,7 +10,7 @@
       maxlength="256"
       tabindex="1"
       :value="text"
-      @blur="$emit('blur', $event)"
+      @blur="handleBlur"
       @focus="$emit('focus', $event)"
     />
   </div>
@@ -56,6 +56,15 @@ export default {
     },
   },
 
+  methods: {
+    handleBlur(event) {
+      // if the blur was because of outside focus
+      // currentTarget is the parent element, relatedTarget is the clicked element
+      if (!event.relatedTarget || event.relatedTarget.id !== "result_list") {
+        this.$emit("blur", event);
+      }
+    },
+  },
   mounted() {
     const autoCompleteJS = new AutoComplete({
       data: {
@@ -102,6 +111,7 @@ export default {
       },
       onSelection: (feedback) => {
         this.$emit("itemSelected", feedback.selection.value);
+        this.$emit("blur");
       },
     });
   },
@@ -111,13 +121,14 @@ export default {
 <style lang="scss">
 #autoComplete {
   border: 0 solid white;
-  border-radius: 10px;
+  border-radius: 5px;
   opacity: 0.5;
   outline: none;
   transition: all ease 0.3s;
   padding: 0.1rem 0.5rem;
   width: 75%;
   position: relative;
+  margin: 0.1rem 0;
 
   &:focus {
     opacity: 0.9;
@@ -143,6 +154,7 @@ export default {
   padding: 0.2rem;
   display: block;
   outline: none;
+  width: 100%;
   cursor: pointer;
 
   &:hover {

@@ -11,7 +11,7 @@
     ></search-box>
 
     <date-picker
-      v-if="isDateVisible"
+      v-show="isDateVisible"
       class="input-date"
       v-model="selectedDate"
       :date="selectedDate"

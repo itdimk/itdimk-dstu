@@ -1,5 +1,10 @@
 <template>
-  <input type="date" :value="currDateString" @change="onDateChanged" />
+  <input
+    class="date-picker"
+    type="date"
+    :value="currDateString"
+    @change="onDateChanged"
+  />
 </template>
 
 <script>
@@ -11,7 +16,7 @@ export default defineComponent({
   props: ["date"],
 
   data: () => ({
-    currDateString: formatDateToISO(new Date())
+    currDateString: formatDateToISO(new Date()),
   }),
 
   methods: {
@@ -30,5 +35,18 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
+.date-picker {
+  background-color: white;
+  opacity: 0.5;
+  padding: 0 0.5rem;
+  outline: none;
+  border: 1px gray solid;
+  border-radius: 5px;
+  transition: 0.3s opacity ease;
+}
+
+.date-picker:focus {
+  opacity: 1;
+}
 </style>
