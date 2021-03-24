@@ -11,7 +11,7 @@ export default {
     alertData: {
       type: Object,
       validator(value: any) {
-        return value.title && value.description && value.type;
+        return value && value.title && value.description && value.type;
       },
     },
   },

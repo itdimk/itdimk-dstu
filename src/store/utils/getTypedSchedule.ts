@@ -40,14 +40,16 @@ function getTypedDays(dstuResponseJson: any): ScheduleDay[] {
 
         }
 
-        days[days.length - 1].subjects.push({
-            id: subject["код"],
-            title: subject["дисциплина"],
-            startTime: subject["начало"],
-            endTime: subject["конец"],
-            teacherName: subject["преподаватель"],
-            classNumber: subject["аудитория"]
-        })
+        const sameSubject = days[days.length - 1].subjects.find(s => s.startTime === subject["начало"]);
+
+            days[days.length - 1].subjects.push({
+                id: subject["код"],
+                title: subject["дисциплина"],
+                startTime: sameSubject ? '' : subject["начало"],
+                endTime: sameSubject ? '' : subject["конец"],
+                teacherName: subject["преподаватель"],
+                classNumber: subject["аудитория"]
+            })
     }
 
     return days;

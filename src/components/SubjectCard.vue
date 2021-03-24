@@ -4,6 +4,7 @@
     <div class="time">
       <p>{{ subject.startTime }}</p>
       <p>{{ subject.endTime }}</p>
+      <img class='arrow' v-if="!subject.startTime" src="../assets/arrow_upward.svg">
     </div>
 
     <span class="splitter"></span>
@@ -46,17 +47,17 @@ export default defineComponent({
 }
 
 .time {
-  padding: 0 1rem;
-  font-size: 1.1rem;
+  padding: 0 0.8rem;
+  font-size: 1.07rem;
   margin-top: auto;
   margin-bottom: auto;
 }
 
 .main {
-  padding: 0.5rem 1rem;
+  padding: 0.4rem 0.4rem 0.4rem 0.7rem;
 
   .title {
-    font-size: 1.05rem;
+    font-size: 1em;
   }
 
   .class-number {
@@ -72,6 +73,10 @@ export default defineComponent({
 .splitter {
   width: 1px;
   background: #DFDFDF;
+}
+
+.arrow {
+  min-width:1.5rem;
 }
 
 </style>
