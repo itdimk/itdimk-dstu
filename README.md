@@ -1,19 +1,5 @@
-# itdimk-dstu
+# ITDiMK DSTU Schedule
 
-## Project setup
-```
-npm install
-```
+The alternative site with Don State Technical University's schedule.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Avaible at http://dstu-rasp.web.app
